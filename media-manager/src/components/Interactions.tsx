@@ -1,3 +1,6 @@
+import saveIcon from "../../public/assets/icons8-save-50-white.png";
+import deleteIcon from "../../public/assets/icons8-trash-can-50-white.png";
+
 type DeleteButtonProps = {
   disabled: boolean;
 };
@@ -37,7 +40,7 @@ function MediaControls({ deleteDisabled }: MediaControlsProps) {
 function SaveButton() {
   return (
     <button className="save-button">
-      <img src="/src/public/assets/icons8-save-50-white.png" alt="Save icon" />
+      <img src={saveIcon} alt="Save icon" />
     </button>
   );
 }
@@ -45,7 +48,7 @@ function SaveButton() {
 function DeleteButton({ disabled }: DeleteButtonProps) {
   return (
     <button className="delete-button" disabled={disabled}>
-        <img src="/src/public/assets/icons8-trash-can-50-white.png" alt="Delete icon" />
+        <img src={deleteIcon} alt="Delete icon" />
     </button>
   );
 }

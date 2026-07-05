@@ -1,4 +1,5 @@
 import { MediaControls } from "./Interactions";
+import exampleMovieArt from "../../public/assets/example-movie.jpg";
 
 type mediaItem = {
   category: string;
@@ -29,7 +30,7 @@ type MediaTitleProps = {
 function MediaArt({ mediaItem }: MediaArtProps) {
   return (
     <div className="media-art">
-      <img style={{ maxHeight: "150px" }} src="/src/public/assets/example-movie.jpg" alt={`${mediaItem.name} artwork`} />
+      <img style={{ maxHeight: "150px" }} src={exampleMovieArt} alt={`${mediaItem.name} artwork`} />
     </div>
   );
 }
