@@ -29,7 +29,7 @@ type MediaTitleProps = {
 function MediaArt({ mediaItem }: MediaArtProps) {
   return (
     <div className="media-art">
-      <img style={{ maxHeight: "150px" }} src="/src/assets/example-movie.jpg" alt={`${mediaItem.name} artwork`} />
+      <img style={{ maxHeight: "150px" }} src="/src/public/assets/example-movie.jpg" alt={`${mediaItem.name} artwork`} />
     </div>
   );
 }
