@@ -1,7 +1,33 @@
 import { DeleteButton } from "./Interactions";
 
+type mediaItem = {
+  category: string;
+  name: string;
+  year: number;
+  size: number;
+  isDeletable: boolean;
+  reason?: string;
+  age: number;
+};
 
-function MediaArt({ mediaItem }) {
+type MediaCardProps = {
+  mediaItem: mediaItem;
+};
+
+type MediaArtProps = {
+  mediaItem: mediaItem;
+};
+
+type MediaInfoProps = {
+  mediaItem: mediaItem;
+};
+
+type MediaTitleProps = {
+  title: string;
+};
+
+
+function MediaArt({ mediaItem }: MediaArtProps) {
   return (
     <div className="media-art">
       <img style={{ maxHeight: "100px" }} src="/src/assets/hero.png" alt={`${mediaItem.name} artwork`} />
@@ -9,13 +35,13 @@ function MediaArt({ mediaItem }) {
   );
 }
 
-function MediaTitle({ title }) {
+function MediaTitle({ title }: MediaTitleProps) {
   return (
     <h3>{title}</h3>
   );
 }
 
-function MediaInfo({ mediaItem }) {
+function MediaInfo({ mediaItem }: MediaInfoProps) {
   return (
     <div className="media-info">
       <MediaTitle title={mediaItem.name} />
@@ -31,7 +57,7 @@ function MediaInfo({ mediaItem }) {
   );
 }
 
-function MediaCard({ mediaItem }) {
+function MediaCard({ mediaItem }: MediaCardProps) {
   return (
     <div className={`media-card ${mediaItem.isDeletable ? '' : 'disabled'}`}>
       <MediaArt mediaItem={mediaItem} />

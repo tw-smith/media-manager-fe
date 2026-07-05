@@ -1,4 +1,28 @@
-function DeleteButton({disabled}) {
+type DeleteButtonProps = {
+  disabled: boolean;
+};
+
+type ToggleSwitchProps = {
+  onCategoryFilterChange: (category: string) => void;
+  
+};
+
+type SortSelectorProps = {
+  availableOptions: { value: string; label: string }[];
+  sortOption: string;
+  onSortOptionChange: (option: string) => void;
+};
+
+type RadioButtonProps = {
+  id: string;
+  name: string;
+  value: string;
+  label: string;
+  checked: boolean;
+  onChange: () => void;
+};
+
+function DeleteButton({ disabled }: DeleteButtonProps) {
   return (
     <button className="delete-button" disabled={disabled}>
         <img src="/src/assets/icons8-trash-can-50-white.png" alt="Delete icon" />
@@ -6,7 +30,7 @@ function DeleteButton({disabled}) {
   );
 }
 
-function ToggleSwitch( { category, onCategoryFilterChange } ) {
+function ToggleSwitch( { onCategoryFilterChange }: ToggleSwitchProps) {
   return (
     <div className="toggle-switch">
     <div>MOVIES</div>
@@ -22,7 +46,7 @@ function ToggleSwitch( { category, onCategoryFilterChange } ) {
   )
 }
 
-function SortSelector({ availableOptions, sortOption, onSortOptionChange }) {
+function SortSelector({ availableOptions, sortOption, onSortOptionChange }: SortSelectorProps) {
   return (
     <div className="sort-selector">
         {availableOptions.map(option => (
@@ -40,7 +64,7 @@ function SortSelector({ availableOptions, sortOption, onSortOptionChange }) {
   );
 }
 
-function RadioButton({ id, name, value, label, checked, onChange }) {
+function RadioButton({ id, name, value, label, checked, onChange }: RadioButtonProps) {
   return (
     <div className="radio-button">
       <input 

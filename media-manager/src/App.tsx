@@ -3,8 +3,26 @@ import { MediaCard } from './components/MediaCard'
 import { SortSelector, ToggleSwitch } from './components/Interactions'
 import './App.css'
 
+type FilterBarProps = {
+  showNotDeletable: boolean;
+  onDeleteFilterToggle: (show: boolean) => void;
+  onCategoryFilterChange: (category: string) => void;
+  sortOption: string;
+  onSortOptionChange: (option: string) => void;
+};
 
-function FilterBar({ showNotDeletable, onDeleteFilterToggle, categoryFilter, onCategoryFilterChange, sortOption, onSortOptionChange }) {
+type MediaTableProps = {
+  media: { category: string; name: string; year: number; size: number; isDeletable: boolean; reason?: string; age: number }[];
+  showNotDeletable: boolean;
+  categoryFilter: string;
+  sortOption: string;
+};
+
+type FilterableMediaListProps = {
+  media: { category: string; name: string; year: number; size: number; isDeletable: boolean; reason?: string; age: number }[];
+};
+
+function FilterBar({ showNotDeletable, onDeleteFilterToggle, onCategoryFilterChange, sortOption, onSortOptionChange }: FilterBarProps) {
   return (
     <div className="filter-bar">
     <div>
@@ -20,12 +38,12 @@ function FilterBar({ showNotDeletable, onDeleteFilterToggle, categoryFilter, onC
       <SortSelector availableOptions={SORT_OPTIONS} sortOption={sortOption} onSortOptionChange={onSortOptionChange} />
     </div>
     <div>
-      <ToggleSwitch category={categoryFilter} onCategoryFilterChange={onCategoryFilterChange} />
+      <ToggleSwitch onCategoryFilterChange={onCategoryFilterChange} />
     </div>
     </div>  );
 }
 
-function MediaTable({ media, showNotDeletable, categoryFilter, sortOption }) {
+function MediaTable({ media, showNotDeletable, categoryFilter, sortOption }: MediaTableProps) {
   if (!showNotDeletable) {
     media = media.filter(item => item.isDeletable);
   } else {
@@ -51,7 +69,7 @@ function MediaTable({ media, showNotDeletable, categoryFilter, sortOption }) {
 
 
 
-function FilterableMediaList({ media }) {
+function FilterableMediaList({ media }: FilterableMediaListProps) {
   const [showNotDeletable, setShowNotDeletable] = useState(false);
   const [categoryFilter, setCategoryFilter] = useState("MOVIE");
   const [sortOption, setSortOption] = useState("size");
@@ -61,7 +79,6 @@ function FilterableMediaList({ media }) {
       <FilterBar 
         showNotDeletable={showNotDeletable}
         onDeleteFilterToggle={setShowNotDeletable}
-        categoryFilter={categoryFilter}
         onCategoryFilterChange={setCategoryFilter}
         sortOption={sortOption}
         onSortOptionChange={setSortOption}
