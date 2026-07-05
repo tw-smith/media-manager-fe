@@ -12,14 +12,14 @@ type FilterBarProps = {
 };
 
 type MediaTableProps = {
-  media: { category: string; name: string; year: number; size: number; isDeletable: boolean; reason?: string; age: number }[];
+  media: { category: string; name: string; size: number; isDeletable: boolean; reason?: string; age: number }[];
   showNotDeletable: boolean;
   categoryFilter: string;
   sortOption: string;
 };
 
 type FilterableMediaListProps = {
-  media: { category: string; name: string; year: number; size: number; isDeletable: boolean; reason?: string; age: number }[];
+  media: { category: string; name: string; size: number; isDeletable: boolean; reason?: string; age: number }[];
 };
 
 function FilterBar({ showNotDeletable, onDeleteFilterToggle, onCategoryFilterChange, sortOption, onSortOptionChange }: FilterBarProps) {
@@ -32,9 +32,10 @@ function FilterBar({ showNotDeletable, onDeleteFilterToggle, onCategoryFilterCha
         checked={showNotDeletable}
         onChange={(e) => onDeleteFilterToggle(e.target.checked)}
       />
-      <label htmlFor="show-not-deletable">Show not deletable</label>
+      <label htmlFor="show-not-deletable">Show all</label>
     </div>
     <div>
+      <b>Sort by:</b>
       <SortSelector availableOptions={SORT_OPTIONS} sortOption={sortOption} onSortOptionChange={onSortOptionChange} />
     </div>
     <div>
@@ -99,16 +100,16 @@ const SORT_OPTIONS = [
 ];
 
 const MEDIA = [
-  {category: "MOVIE", name: "The Matrix", year: 1999, size: 15000, isDeletable: true, age: 125},
-  {category: "MOVIE", name: "Inception", year: 2010, size: 14000, isDeletable: true, age: 14},
-  {category: "MOVIE", name: "The Dark Knight", year: 2008, size: 16000, isDeletable: true, age: 16},
-  {category: "MOVIE", name: "Interstellar", year: 2014, size: 17000, isDeletable: false, reason: "Saved by macron", age: 8},
-  {category: "MOVIE", name: "The Lord of the Rings: The Fellowship of the Ring", year: 2001, size: 18000, isDeletable: true, age: 22},
-  {category: "TV", name: "Breaking Bad", year: 2008, size: 12000, isDeletable: false, reason: "Saved by CaptainLag", age: 16},
-  {category: "TV", name: "Game of Thrones", year: 2011, size: 15000, isDeletable: false, reason: "Saved by CaptainLag", age: 13},
-  {category: "TV", name: "Stranger Things", year: 2016, size: 13000, isDeletable: false, reason: "Saved by tocoron", age: 8},
-  {category: "TV", name: "The Mandalorian", year: 2019, size: 14000, isDeletable: true, age: 5},
-  {category: "TV", name: "The Witcher", year: 2019, size: 16000, isDeletable: true, age: 5}
+  {category: "MOVIE", name: "The Matrix", size: 15000, isDeletable: true, age: 125},
+  {category: "MOVIE", name: "Inception", size: 14000, isDeletable: true, age: 14},
+  {category: "MOVIE", name: "The Dark Knight", size: 16000, isDeletable: true, age: 16},
+  {category: "MOVIE", name: "Interstellar", size: 17000, isDeletable: false, reason: "Saved by macron", age: 8},
+  {category: "MOVIE", name: "The Lord of the Rings: The Fellowship of the Ring", size: 18000, isDeletable: true, age: 22},
+  {category: "TV", name: "Breaking Bad", size: 12000, isDeletable: false, reason: "Saved by CaptainLag", age: 16},
+  {category: "TV", name: "Game of Thrones", size: 15000, isDeletable: false, reason: "Saved by CaptainLag", age: 13},
+  {category: "TV", name: "Stranger Things", size: 13000, isDeletable: false, reason: "Saved by tocoron", age: 8},
+  {category: "TV", name: "The Mandalorian", size: 14000, isDeletable: true, age: 5},
+  {category: "TV", name: "The Witcher", size: 16000, isDeletable: true, age: 5}
 ]
 
 

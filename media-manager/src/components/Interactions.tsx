@@ -4,7 +4,6 @@ type DeleteButtonProps = {
 
 type ToggleSwitchProps = {
   onCategoryFilterChange: (category: string) => void;
-  
 };
 
 type SortSelectorProps = {
@@ -21,6 +20,27 @@ type RadioButtonProps = {
   checked: boolean;
   onChange: () => void;
 };
+
+type MediaControlsProps = {
+  deleteDisabled: boolean;
+};
+
+function MediaControls({ deleteDisabled }: MediaControlsProps) {
+  return (
+    <div className="media-controls">
+      <SaveButton />
+      <DeleteButton disabled={deleteDisabled} />
+    </div>
+  );
+}
+
+function SaveButton() {
+  return (
+    <button className="save-button">
+      <img src="/src/assets/icons8-save-50-white.png" alt="Save icon" />
+    </button>
+  );
+}
 
 function DeleteButton({ disabled }: DeleteButtonProps) {
   return (
@@ -80,4 +100,4 @@ function RadioButton({ id, name, value, label, checked, onChange }: RadioButtonP
   );
 }
 
-export { DeleteButton, ToggleSwitch, SortSelector };
+export { MediaControls, ToggleSwitch, SortSelector };
