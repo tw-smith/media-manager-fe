@@ -1,7 +1,8 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { MediaCard } from './components/MediaCard'
 import { SortSelector, ToggleSwitch } from './components/Interactions'
 import './App.css'
+import axios from 'axios'
 
 type FilterBarProps = {
   showNotDeletable: boolean;
@@ -12,14 +13,14 @@ type FilterBarProps = {
 };
 
 type MediaTableProps = {
-  media: { category: string; name: string; size: number; isDeletable: boolean; reason?: string; age: number }[];
+  media: MediaItem[];
   showNotDeletable: boolean;
   categoryFilter: string;
   sortOption: string;
 };
 
 type FilterableMediaListProps = {
-  media: { category: string; name: string; size: number; isDeletable: boolean; reason?: string; age: number }[];
+  media: MediaItem[];
 };
 
 function FilterBar({ showNotDeletable, onDeleteFilterToggle, onCategoryFilterChange, sortOption, onSortOptionChange }: FilterBarProps) {
@@ -99,20 +100,64 @@ const SORT_OPTIONS = [
   { value: "age", label: "Age" },
 ];
 
-const MEDIA = [
-  {category: "MOVIE", name: "The Matrix", size: 15000, isDeletable: true, age: 125},
-  {category: "MOVIE", name: "Inception", size: 14000, isDeletable: true, age: 14},
-  {category: "MOVIE", name: "The Dark Knight", size: 16000, isDeletable: true, age: 16},
-  {category: "MOVIE", name: "Interstellar", size: 17000, isDeletable: false, reason: "Saved by macron", age: 8},
-  {category: "MOVIE", name: "The Lord of the Rings: The Fellowship of the Ring", size: 18000, isDeletable: true, age: 22},
-  {category: "TV", name: "Breaking Bad", size: 12000, isDeletable: false, reason: "Saved by CaptainLag", age: 16},
-  {category: "TV", name: "Game of Thrones", size: 15000, isDeletable: false, reason: "Saved by CaptainLag", age: 13},
-  {category: "TV", name: "Stranger Things", size: 13000, isDeletable: false, reason: "Saved by tocoron", age: 8},
-  {category: "TV", name: "The Mandalorian", size: 14000, isDeletable: true, age: 5},
-  {category: "TV", name: "The Witcher", size: 16000, isDeletable: true, age: 5}
-]
+// const MEDIA = [
+//   {category: "MOVIE", name: "The Matrix", size: 15000, isDeletable: true, age: 125},
+//   {category: "MOVIE", name: "Inception", size: 14000, isDeletable: true, age: 14},
+//   {category: "MOVIE", name: "The Dark Knight", size: 16000, isDeletable: true, age: 16},
+//   {category: "MOVIE", name: "Interstellar", size: 17000, isDeletable: false, reason: "Saved by macron", age: 8},
+//   {category: "MOVIE", name: "The Lord of the Rings: The Fellowship of the Ring", size: 18000, isDeletable: true, age: 22},
+//   {category: "TV", name: "Breaking Bad", size: 12000, isDeletable: false, reason: "Saved by CaptainLag", age: 16},
+//   {category: "TV", name: "Game of Thrones", size: 15000, isDeletable: false, reason: "Saved by CaptainLag", age: 13},
+//   {category: "TV", name: "Stranger Things", size: 13000, isDeletable: false, reason: "Saved by tocoron", age: 8},
+//   {category: "TV", name: "The Mandalorian", size: 14000, isDeletable: true, age: 5},
+//   {category: "TV", name: "The Witcher", size: 16000, isDeletable: true, age: 5}
+// ]
 
-
-export default function App() {
-  return <FilterableMediaList media={MEDIA} />
+type APIMediaItem = {
+  Title: string;
+  SizeOnDisk: number;
+  DateAdded: string;
+  PosterURL: string;
 }
+
+type MediaItem = {
+  category: string;
+  name: string;
+  size: number;
+  isDeletable: boolean;
+  reason?: string;
+  age: number;
+  posterURL: string;
+}
+
+const toMovieMediaItems = (apiMediaItems: APIMediaItem[]): MediaItem[] => {
+  return apiMediaItems.map(item => {
+    const dateAdded = new Date(item.DateAdded);
+    const ageInDays = Math.floor((Date.now() - dateAdded.getTime()) / (1000 * 60 * 60 * 24));
+    return {
+      category: "MOVIE",
+      name: item.Title,
+      size: item.SizeOnDisk,
+      isDeletable: true,
+      age: ageInDays,
+      posterURL: item.PosterURL
+    }
+  });
+}
+
+function App() {
+  const [media, setMedia] = useState<MediaItem[]>([])
+  useEffect(() => {
+    const fetchMedia = async () => {
+      const response = await axios.get<APIMediaItem[]>('http://localhost:5677/api/movies');
+      setMedia(toMovieMediaItems(response.data));
+    }
+
+    fetchMedia();
+  }, [])
+
+  return <FilterableMediaList media={media} />
+}
+
+export type { MediaItem };
+export default App;

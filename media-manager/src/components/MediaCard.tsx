@@ -1,25 +1,27 @@
 import { MediaControls } from "./Interactions";
-import exampleMovieArt from "../../public/assets/example-movie.jpg";
+import type { MediaItem } from "../App";
+import axios from "axios";
+import { useEffect, useState } from "react";
 
-type mediaItem = {
-  category: string;
-  name: string;
-  size: number;
-  isDeletable: boolean;
-  reason?: string;
-  age: number;
-};
+// type mediaItem = {
+//   category: string;
+//   name: string;
+//   size: number;
+//   isDeletable: boolean;
+//   reason?: string;
+//   age: number;
+// };
 
 type MediaCardProps = {
-  mediaItem: mediaItem;
+  mediaItem: MediaItem;
 };
 
 type MediaArtProps = {
-  mediaItem: mediaItem;
+  mediaItem: MediaItem;
 };
 
 type MediaInfoProps = {
-  mediaItem: mediaItem;
+  mediaItem: MediaItem;
 };
 
 type MediaTitleProps = {
@@ -28,9 +30,49 @@ type MediaTitleProps = {
 
 
 function MediaArt({ mediaItem }: MediaArtProps) {
+  const [image, setImage] = useState("");
+
+  useEffect(() => {
+    let isMounted = true;
+
+    const getImage = async () => {
+      try {
+        const res = await axios.get(mediaItem.posterURL, {
+          responseType: "arraybuffer",
+        });
+
+        const base64 = btoa(
+          new Uint8Array(res.data).reduce(
+            (data, byte) => data + String.fromCharCode(byte),
+            ""
+          )
+        );
+
+        if (isMounted) {
+          setImage(base64);
+        }
+      } catch (error) {
+        console.error("Failed to load image", error);
+        if (isMounted) {
+          setImage("");
+        }
+      }
+    };
+
+    getImage();
+
+    return () => {
+      isMounted = false;
+    };
+  }, [mediaItem.posterURL]);
+
   return (
     <div className="media-art">
-      <img style={{ maxHeight: "150px" }} src={exampleMovieArt} alt={`${mediaItem.name} artwork`} />
+      <img
+        style={{ maxHeight: "150px" }}
+        src={image ? `data:image/jpeg;base64,${image}` : ""}
+        alt={`${mediaItem.name} artwork`}
+      />
     </div>
   );
 }
@@ -64,5 +106,6 @@ function MediaCard({ mediaItem }: MediaCardProps) {
     </div>
   );
 }
+
 
 export { MediaCard };
