@@ -149,8 +149,17 @@ function App() {
   const [media, setMedia] = useState<MediaItem[]>([])
   useEffect(() => {
     const fetchMedia = async () => {
-      const response = await axios.get<APIMediaItem[]>('http://localhost:5677/api/movies');
-      setMedia(toMovieMediaItems(response.data));
+      const apiRoot = import.meta.env.VITE_API_ROOT as string
+      const response = await axios.get(`${apiRoot}/movies`)
+
+      const payload = response.data as unknown
+      const apiItems = Array.isArray(payload)
+        ? (payload as APIMediaItem[])
+        : Array.isArray((payload as { movies?: unknown[] })?.movies)
+          ? ((payload as { movies: APIMediaItem[] }).movies)
+          : []
+
+      setMedia(toMovieMediaItems(apiItems));
     }
 
     fetchMedia();
