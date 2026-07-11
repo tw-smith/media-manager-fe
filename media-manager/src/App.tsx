@@ -149,7 +149,8 @@ function App() {
   const [media, setMedia] = useState<MediaItem[]>([])
   useEffect(() => {
     const fetchMedia = async () => {
-      const apiRoot = import.meta.env.VITE_API_ROOT as string
+      //const apiRoot = import.meta.env.VITE_API_ROOT as string
+      const apiRoot = "http://mm.api.tw-smith.me/api"
       const response = await axios.get(`${apiRoot}/movies`)
 
       const payload = response.data as unknown
